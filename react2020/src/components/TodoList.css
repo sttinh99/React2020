@@ -1,0 +1,7 @@
+.complete {
+  text-decoration: line-through;
+}
+.TodoItem {
+  font-family: "Segoe UI light";
+  font-size: 20px;
+}

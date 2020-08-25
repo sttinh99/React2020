@@ -15,8 +15,20 @@ class App extends Component {
     };
   }
   onItemClicked(item) {
-    console.log("item click", item);
     return (event) => {
+      const isComplete = item.isComplete;
+      const { todoItems } = this.state;
+      const index = todoItems.indexOf(item);
+      this.setState({
+        todoItems: [
+          ...todoItems.slice(0, index),
+          {
+            ...item,
+            isComplete: !isComplete,
+          },
+          ...todoItems.slice(index + 1),
+        ],
+      });
       console.log(item);
     };
   }

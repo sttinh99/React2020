@@ -1,7 +1,19 @@
-.complete {
+.complete p {
   text-decoration: line-through;
+  opacity: 0.3;
 }
 .TodoItem {
+  display: flex;
+  margin-left: 10px;
   font-family: "Segoe UI light";
+  margin: 0;
   font-size: 20px;
+  border-bottom: 1px solid #7d7a7ac4;
+}
+.TodoItem:last-child {
+  border-bottom: none;
+}
+.TodoItem img {
+  margin: 0 10px 0;
+  width: 32px;
 }

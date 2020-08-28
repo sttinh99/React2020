@@ -14,18 +14,16 @@ class TodoList extends Component {
   //     console.log(this.props.item);
   //   }
   render() {
-    const { item, onClick } = this.props;
+    const { item, onClick, Remove } = this.props;
     let url = tick;
     if (!item.isComplete) {
       url = check;
     }
     return (
-      <div
-        onClick={onClick}
-        className={classNames("TodoItem", { complete: item.isComplete })}
-      >
-        <img src={url} alt="picture" />
+      <div className={classNames("TodoItem", { complete: item.isComplete })}>
+        <img src={url} alt="url" onClick={onClick} />
         <p>{item.title}</p>
+        <button onClick={Remove}>X</button>
       </div>
     );
   }

@@ -1,14 +1,16 @@
-.complete p {
+.TodoItem.complete {
   text-decoration: line-through;
-  opacity: 0.3;
+  opacity: 1;
 }
 .TodoItem {
+  position: relative;
   display: flex;
   margin-left: 10px;
   font-family: "Segoe UI light";
   margin: 0;
   font-size: 20px;
   border-bottom: 1px solid #7d7a7ac4;
+  opacity: 0.3;
 }
 .TodoItem:last-child {
   border-bottom: none;
@@ -16,4 +18,18 @@
 .TodoItem img {
   margin: 0 10px 0;
   width: 32px;
+}
+.TodoItem button {
+  position: absolute;
+  right: 10px;
+  top: 22px;
+
+  font-size: 20px;
+  text-decoration: none !important;
+  border: none;
+  background: none;
+  color: rgb(165, 165, 165);
+}
+.TodoItem button:focus {
+  outline: none;
 }

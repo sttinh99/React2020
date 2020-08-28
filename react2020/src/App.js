@@ -3,16 +3,22 @@ import React, { Component } from "react";
 import "./App.css";
 import TodoList from "./components/TodoList";
 
+import tickAll from "./images/tick-all.svg";
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
+      newItem: "",
+      currentFilter: ["all", "active", "complete"],
       todoItems: [
         { title: "mua bim bim", isComplete: true },
         { title: "di nau com", isComplete: true },
         { title: "di dao", isComplete: false },
       ],
     };
+    this.onKeyUp = this.onKeyUp.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
   onItemClicked(item) {
     return (event) => {
@@ -29,23 +35,115 @@ class App extends Component {
           ...todoItems.slice(index + 1),
         ],
       });
-      console.log(item);
+      //console.log(item);
+    };
+  }
+  Remove(item) {
+    return () => {
+      const { todoItems } = this.state;
+      const index = todoItems.indexOf(item);
+      todoItems.splice(index, 1);
+      this.setState({
+        todoItems: todoItems,
+      });
+    };
+  }
+  setClick() {
+    return () => {
+      const { todoItems } = this.state;
+      const isComplete = todoItems[0].isComplete;
+      this.setState({
+        todoItems: todoItems.map((item) => {
+          item.isComplete = !isComplete;
+          return item;
+        }),
+      });
+    };
+  }
+  onKeyUp(event) {
+    if (event.keyCode === 13) {
+      //enter code
+      let text = event.target.value;
+      if (!text) {
+        return;
+      }
+      text = text.trim(); //delete space
+      if (!text) {
+        return;
+      }
+      this.setState({
+        newItem: "",
+        todoItems: [
+          { title: text, isComplete: false },
+          ...this.state.todoItems,
+        ],
+      });
+    }
+  }
+  onChange(event) {
+    this.setState({ newItem: event.target.value });
+  }
+  Filter(item) {
+    const { todoItems } = this.state;
+    return () => {
+      if (item === "all") {
+        this.setState({ todoItems: todoItems });
+      }
+      if (item === "active") {
+        this.setState({
+          todoItems: todoItems.filter((item) => {
+            return item.isComplete === false;
+          }),
+        });
+      }
+      if (item === "complete") {
+        this.setState({
+          todoItems: todoItems.filter((item) => {
+            return item.isComplete === true;
+          }),
+        });
+      }
     };
   }
   render() {
-    const { isComplete } = this.state;
-    const { todoItems } = this.state;
+    const { todoItems, newItem, currentFilter, isComplete } = this.state;
     return (
       <div className="App">
+        <div className="header">
+          <img
+            src={tickAll}
+            alt="tickAll"
+            width={32}
+            height={32}
+            onClick={this.setClick()}
+          />
+          <input
+            type="text"
+            placeholder="Add a new item"
+            value={newItem}
+            onChange={this.onChange}
+            onKeyUp={this.onKeyUp}
+          />
+        </div>
         {todoItems.length &&
           todoItems.map((item, index) => (
             <TodoList
               key={index}
               item={item}
               onClick={this.onItemClicked(item)}
+              Remove={this.Remove(item)}
               isComplete={isComplete}
             />
           ))}
+        <div className="footer">
+          {currentFilter.map((item, index) => {
+            return (
+              <button id={item} key={index} onClick={this.Filter(item)}>
+                {item}
+              </button>
+            );
+          })}
+        </div>
       </div>
     );
   }
